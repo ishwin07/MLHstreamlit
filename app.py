@@ -38,9 +38,6 @@ with col2:
     if st.button("💧 Fertilizer Recommendation"):
         open_modal('Fertilizer')
 
-with col3:
-    if st.button("📈 Yield Prediction"):
-        open_modal('Yield')
 
 # Modal-like Input
 if st.session_state.modal_open:
@@ -68,39 +65,5 @@ if st.session_state.modal_open:
             fertilizer_humidity = st.number_input("Enter Humidity (%)", min_value=0.0)
             fertilizer_moisture = st.number_input("Enter Moisture (%)", min_value=0.0)
 
-        elif st.session_state.current_prediction_type == 'Yield':
-            yield_state = st.text_input("Enter State Name")
+        
 
-            # Dropdown for selecting Crop Type
-            crop_options = [
-                'Arecanut', 'Arhar/Tur', 'Castor seed', 'Coconut', 'Cotton(lint)',
-                'Dry chillies', 'Gram', 'Jute', 'Linseed', 'Maize', 'Mesta',
-                'Niger seed', 'Onion', 'Other Rabi pulses', 'Potato',
-                'Rapeseed & Mustard', 'Rice', 'Sesamum', 'Small millets',
-                'Sugarcane', 'Sweet potato', 'Tapioca', 'Tobacco', 'Turmeric',
-                'Wheat', 'Bajra', 'Black pepper', 'Cardamom', 'Coriander',
-                'Garlic', 'Ginger', 'Groundnut', 'Horse-gram', 'Jowar', 'Ragi',
-                'Cashewnut', 'Banana', 'Soyabean', 'Barley', 'Khesari', 'Masoor',
-                'Moong(Green Gram)', 'Other Kharif pulses', 'Safflower',
-                'Sannhamp', 'Sunflower', 'Urad', 'Peas & beans (Pulses)',
-                'Other oilseeds', 'Other Cereals', 'Cowpea(Lobia)',
-                'Oilseeds total', 'Guar seed', 'Other Summer Pulses', 'Moth'
-            ]
-
-            yield_crop = st.selectbox("Select Crop Type", crop_options)  # Dropdown added
-
-            yield_area = st.number_input("Enter Area in Hectares", min_value=0.0)
-            yield_n = st.number_input("Enter Nitrogen (N)", min_value=0.0)
-            yield_p = st.number_input("Enter Phosphorous (P)", min_value=0.0)
-            yield_k = st.number_input("Enter Potassium (K)", min_value=0.0)
-            yield_ph = st.number_input("Enter Soil pH Level", min_value=0.0, max_value=14.0)
-            yield_temperature = st.number_input("Enter Temperature (°C)", min_value=0.0, max_value=50.0)
-
-        # Predict Button
-        if st.button("Predict"):
-            handle_predict()
-            close_modal()
-
-        # Close Modal Button
-        if st.button("Close"):
-            close_modal()
