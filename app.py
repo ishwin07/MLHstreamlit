@@ -65,5 +65,13 @@ if st.session_state.modal_open:
             fertilizer_humidity = st.number_input("Enter Humidity (%)", min_value=0.0)
             fertilizer_moisture = st.number_input("Enter Moisture (%)", min_value=0.0)
 
-        
+         # Predict Button
+        if st.button("Predict"):
+            handle_predict()
+            close_modal()
+
+        # Close Modal Button
+        if st.button("Close"):
+            close_modal()
+
 
