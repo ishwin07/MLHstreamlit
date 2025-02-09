@@ -1,5 +1,10 @@
 import streamlit as st
 import numpy as np
+import joblib  # For loading ML models
+
+# Load pre-trained models (Ensure you have these models saved as .pkl files)
+crop_model = joblib.load("crop_recommendation_model.pkl")
+fertilizer_model = joblib.load("fertilizer_recommendation_model.pkl")
 
 # Page Configuration
 st.set_page_config(page_title="ML Predictions | AgriSpace", layout="centered")
@@ -25,7 +30,15 @@ def close_modal():
 
 # Prediction Function
 def handle_predict():
-    st.success(f"Predicting {st.session_state.current_prediction_type} with input values!")
+    if st.session_state.current_prediction_type == "Crop":
+        features = np.array([[crop_n, crop_p, crop_k, crop_temperature, crop_humidity, crop_ph, crop_rainfall]])
+        prediction = crop_model.predict(features)[0]
+        st.success(f"Recommended Crop: **{prediction}**")
+
+    elif st.session_state.current_prediction_type == "Fertilizer":
+        features = np.array([[fertilizer_n, fertilizer_p, fertilizer_k, fertilizer_temp, fertilizer_humidity, fertilizer_moisture]])
+        prediction = fertilizer_model.predict(features)[0]
+        st.success(f"Recommended Fertilizer: **{prediction}**")
 
 # Card Layout
 col1, col2, col3 = st.columns(3)
@@ -38,11 +51,10 @@ with col2:
     if st.button("💧 Fertilizer Recommendation"):
         open_modal('Fertilizer')
 
-
 # Modal-like Input
 if st.session_state.modal_open:
     with st.expander(f"Enter {st.session_state.current_prediction_type} Details", expanded=True):
-        
+
         if st.session_state.current_prediction_type == 'Crop':
             crop_n = st.number_input("Enter Nitrogen (N)", min_value=0.0)
             crop_p = st.number_input("Enter Phosphorous (P)", min_value=0.0)
@@ -65,7 +77,7 @@ if st.session_state.modal_open:
             fertilizer_humidity = st.number_input("Enter Humidity (%)", min_value=0.0)
             fertilizer_moisture = st.number_input("Enter Moisture (%)", min_value=0.0)
 
-         # Predict Button
+        # Predict Button
         if st.button("Predict"):
             handle_predict()
             close_modal()
@@ -73,5 +85,3 @@ if st.session_state.modal_open:
         # Close Modal Button
         if st.button("Close"):
             close_modal()
-
-
